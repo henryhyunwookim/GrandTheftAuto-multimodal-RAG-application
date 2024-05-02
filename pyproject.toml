@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "grandtheftauto-multimodal-rag-application"
+version = "0.1.0"
+description = ""
+authors = ["henryhyunwookim <44928790+henryhyunwookim@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pillow = "^10.3.0"
+datasets = "^2.19.0"
+ipykernel = "^6.29.4"
+jupyter = "^1.0.0"
+ipywidgets = "^8.1.2"
+matplotlib = "^3.8.4"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

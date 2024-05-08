@@ -13,6 +13,11 @@ ipykernel = "^6.29.4"
 jupyter = "^1.0.0"
 ipywidgets = "^8.1.2"
 matplotlib = "^3.8.4"
+sentence-transformers = "^2.7.0"
+transformers = {git = "https://github.com/huggingface/transformers.git", rev = "main"}
+lancedb = "^0.6.11"
+torch = "^2.3.0"
+clip = {git = "https://github.com/openai/CLIP.git"}
 
 
 [tool.poetry.group.dev.dependencies]

@@ -42,7 +42,8 @@ if __name__ == "__main__":
         app = gr.Interface(
             fn=main,
             inputs=["text"],
-            outputs=["image", "text"]
+            outputs=["image", "text"],
+            title="Search for a scene in the world of GTA!"
         )
         app.launch(share=True)
     except Exception as e:

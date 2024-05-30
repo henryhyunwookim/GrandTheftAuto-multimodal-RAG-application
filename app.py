@@ -1,48 +1,14 @@
+from utils.utils import get_logger, initialization, get_result
+import gradio as gr
 import logging
 
-logger = logging.getLogger(__name__)
+
+logger = get_logger()
+collection = None
 
 
-def main():
-    ################################################################
-    ################################################################
-    print("Initializing...")
-    logger.info("Initializing...")
-    print("-------------------------------------------------------")
-    logger.info("-------------------------------------------------------")
-
-    print("Importing functions...")
-    logger.info("Importing functions...")
-    # Import module, classes, and functions
-    from sentence_transformers import SentenceTransformer
-    from utils.utils import set_directories, load_data, get_collection, get_result, show_image
-
-    print("Set directories...")
-    logger.info("Set directories...")
-    # Set directories
-    data_pickle_path, chroma_dir = set_directories()
-
-    print("Loading data...")
-    logger.info("Loading data...")
-    # Load dataset
-    data_set = load_data(data_pickle_path)
-
-    print("Loading CLIP model...")
-    logger.info("Loading CLIP model...")
-    # Load CLIP model
-    model = SentenceTransformer("sentence-transformers/clip-ViT-L-14")
-
-    print("Getting vector embeddings...")
-    logger.info("Getting vector embeddings...")
-    # Get vector embeddings
-    collection = get_collection(chroma_dir, model, collection_name='image_vectors', data=data_set['train']['image'])
-
-    print("-------------------------------------------------------")
-    logger.info("-------------------------------------------------------")
-    print("Initialization completed! Ready for search.")
-    logger.info("Initialization completed! Ready for search.")
-    ################################################################
-    ################################################################
+def main(query):
+    logger = logging.getLogger(__name__)
     print("Starting search...")
     logger.info("Starting search...")
     print("-------------------------------------------------------")
@@ -50,27 +16,35 @@ def main():
     exit = False
     while not exit:
         # Collect user query
-        query = input('Type your query, or "exit" if you want to exit: ')
+        # query = input('Type your query, or "exit" if you want to exit: ')
 
         if query == "exit":
             exit = True
             print("-------------------------------------------------------")
             logger.info("-------------------------------------------------------")
-            print("Search exited.")
-            logger.info("Search exited.")
+            print("Search terminated.")
+            logger.info("Search terminated.")
+            return None, "Search terminated."
         else:
             # Get search result including the original descriptions of the images
             image, text = get_result(collection, data_set, query, model, n_results=2)
 
             # Display the image, its caption, and user query
-            show_image(image, text, query)
-    ################################################################
-    ################################################################
+            # show_image(image, text, query)
+            return image, text
 
 
 if __name__ == "__main__":
     try:
-        main()
+        if collection == None:
+            collection, data_set, model, logger = initialization(logger)
+        # main()
+        app = gr.Interface(
+            fn=main,
+            inputs=["text"],
+            outputs=["image", "text"]
+        )
+        app.launch(share=True)
     except Exception as e:
         logger.exception(e)
         raise e

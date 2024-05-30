@@ -1,4 +1,6 @@
 import os
+import logging
+from datetime import datetime
 from pathlib import Path
 import pickle
 from tqdm import tqdm
@@ -90,4 +92,63 @@ def show_image(image, text, query):
     plt.imshow(image)
     plt.show()
     print(f"User query: {query}")
-    print(f"Original description: {text}")
+    print(f"Original description: {text}\n")
+    
+
+def get_logger():
+    log_path = "./log/"
+    if not os.path.exists(log_path):
+        os.mkdir(log_path)
+
+    cur_date = datetime.utcnow().strftime("%Y%m%d")
+    log_filename = f"{log_path}{cur_date}.log"
+
+    logging.basicConfig(
+        filename=log_filename,
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)-8s %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S")
+    
+    logger = logging.getLogger(__name__)
+    
+    return logger
+
+
+def initialization(logger):
+    print("Initializing...")
+    logger.info("Initializing...")
+    print("-------------------------------------------------------")
+    logger.info("-------------------------------------------------------")
+
+    print("Importing functions...")
+    logger.info("Importing functions...")
+    # Import module, classes, and functions
+    from sentence_transformers import SentenceTransformer
+    from utils.utils import set_directories, load_data, get_collection, get_result, show_image
+
+    print("Set directories...")
+    logger.info("Set directories...")
+    # Set directories
+    data_pickle_path, chroma_dir = set_directories()
+
+    print("Loading data...")
+    logger.info("Loading data...")
+    # Load dataset
+    data_set = load_data(data_pickle_path)
+
+    print("Loading CLIP model...")
+    logger.info("Loading CLIP model...")
+    # Load CLIP model
+    model = SentenceTransformer("sentence-transformers/clip-ViT-L-14")
+
+    print("Getting vector embeddings...")
+    logger.info("Getting vector embeddings...")
+    # Get vector embeddings
+    collection = get_collection(chroma_dir, model, collection_name='image_vectors', data=data_set['train']['image'])
+
+    print("-------------------------------------------------------")
+    logger.info("-------------------------------------------------------")
+    print("Initialization completed! Ready for search.")
+    logger.info("Initialization completed! Ready for search.")
+
+    return collection, data_set, model, logger

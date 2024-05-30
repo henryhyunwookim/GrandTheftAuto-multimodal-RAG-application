@@ -9,3 +9,5 @@ app_file: app.py
 pinned: false
 license: mit
 ---
+
+Hosted on https://huggingface.co/spaces/henryhyunwookim/GTA-Multimodal-RAG

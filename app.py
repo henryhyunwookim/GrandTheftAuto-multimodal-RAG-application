@@ -41,8 +41,9 @@ if __name__ == "__main__":
         # main()
         app = gr.Interface(
             fn=main,
-            inputs=["text"],
-            outputs=["image", "text"],
+            inputs=[gr.Textbox(label="Describe the scene that you are looking for:")],
+            outputs=[gr.Image(label="Here's the scene found based on your description:"),
+                     gr.Textbox(label="Original description of the found scene:")],
             title="Search for a scene in the world of GTA!"
         )
         app.launch(share=True)

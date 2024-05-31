@@ -10,4 +10,4 @@ pinned: false
 license: mit
 ---
 
-Hosted on https://huggingface.co/spaces/henryhyunwookim/GTA-Multimodal-RAG
+Hosted at https://huggingface.co/spaces/henryhyunwookim/GTA-Multimodal-RAG

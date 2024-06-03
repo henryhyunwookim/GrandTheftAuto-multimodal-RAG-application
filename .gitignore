@@ -1,3 +1,4 @@
 log/
+notebooks/
 .venv/
 __pycache__

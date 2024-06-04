@@ -7,6 +7,9 @@ from tqdm import tqdm
 from datasets import load_dataset
 import chromadb
 import matplotlib.pyplot as plt
+from sentence_transformers import SentenceTransformer
+import google.generativeai as genai
+from dotenv import load_dotenv
 
 
 def set_directories():
@@ -15,7 +18,7 @@ def set_directories():
     data_dir = curr_dir / 'data'
     data_pickle_path = data_dir / 'data_set.pkl'
 
-    vectordb_dir = curr_dir / 'vectore_storage'
+    vectordb_dir = curr_dir / 'vector_storage'
     chroma_dir = vectordb_dir / 'chroma'
     
     for dir in [data_dir, vectordb_dir, chroma_dir]:
@@ -69,7 +72,7 @@ def get_collection(chroma_dir, model, collection_name, data):
     return collection
 
 
-def get_result(collection, data_set, query, model, n_results=2):
+def get_search_result(collection, data_set, query, model, n_results=2):
     # Query the vector store and get results
     results = collection.query(
         query_embeddings=model.encode([query]),
@@ -114,17 +117,37 @@ def get_logger():
     return logger
 
 
+def get_image_description(image):
+    _ = load_dotenv()
+    GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
+    genai.configure(api_key=GOOGLE_API_KEY)
+
+    vision_model = genai.GenerativeModel(
+        "gemini-pro-vision",
+        generation_config={
+            "temperature": 0.0
+            }
+    )
+    
+    # image = Image.open(image_path)
+    
+    prompt = f"""
+    Describe what you explicitly see in the given image in detail.
+    Begin your description with "In this image," or "This image is about," to provide context.
+    Your response should be a hard description of the given image without any thoughts or suggestions.
+    """
+
+    response = vision_model.generate_content([prompt, image])
+    description_by_llm = response.text
+
+    return description_by_llm
+
+
 def initialization(logger):
     print("Initializing...")
     logger.info("Initializing...")
     print("-------------------------------------------------------")
     logger.info("-------------------------------------------------------")
-
-    print("Importing functions...")
-    logger.info("Importing functions...")
-    # Import module, classes, and functions
-    from sentence_transformers import SentenceTransformer
-    from utils.utils import set_directories, load_data, get_collection, get_result, show_image
 
     print("Set directories...")
     logger.info("Set directories...")

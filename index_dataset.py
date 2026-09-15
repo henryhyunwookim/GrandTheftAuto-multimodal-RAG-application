@@ -30,7 +30,7 @@ Prerequisites & Dependencies:
 Inputs & Outputs:
     - Inputs: HuggingFace GTA Image Captioning Dataset, command-line arguments.
     - Outputs:
-      - `vector_storage/chroma/`: Persistent ChromaDB collection (`gta_hybrid_v2`).
+      - `data/chroma/`: Persistent ChromaDB collection (`gta_hybrid_v2`).
       - `data/descriptions_checkpoint.json`: Checkpointed scene descriptions from Gemini.
       - `data/image_embeddings_cache.npy`: Cached normalized image vector embeddings.
       - `data/caption_embeddings_cache.npy`: Cached normalized caption vector embeddings.
@@ -57,7 +57,7 @@ from PIL import Image
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 
-from utils.utils import get_logger
+from rag_engine import get_logger
 
 # Initialize pipeline logger
 logger = get_logger("index_dataset")
@@ -515,7 +515,7 @@ def build_index(args: argparse.Namespace) -> None:
     """
     curr_dir = Path(os.getcwd())
     data_pickle_path = curr_dir / 'data' / 'data_set.pkl'
-    chroma_dir = curr_dir / 'vector_storage' / 'chroma'
+    chroma_dir = curr_dir / 'data' / 'chroma'
     chroma_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_path = str(curr_dir / DESCRIPTION_CHECKPOINT_FILE)
 

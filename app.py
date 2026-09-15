@@ -43,7 +43,7 @@ import google.generativeai as genai
 from sentence_transformers import SentenceTransformer
 import streamlit as st
 
-from utils.utils import (
+from rag_engine import (
     get_image_description,
     get_index_metadata,
     get_logger,

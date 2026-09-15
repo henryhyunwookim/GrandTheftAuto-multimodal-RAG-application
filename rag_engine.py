@@ -1,8 +1,8 @@
 """
-GTA Multimodal RAG Application - Core Utilities.
+GTA Multimodal RAG Application - Core RAG Engine.
 
 Module:
-    utils.utils
+    rag_engine
 
 Purpose:
     Provides core infrastructure functions for the GTA Multimodal RAG application,
@@ -11,7 +11,7 @@ Purpose:
     Google Gemini multimodal vision inference.
 
 Usage:
-    from utils.utils import (
+    from rag_engine import (
         get_logger,
         initialization,
         get_search_result,
@@ -135,26 +135,23 @@ def set_directories() -> Tuple[Path, Path]:
     """
     Ensure required application directories exist on the local filesystem.
 
-    Creates `./data` and `./vector_storage/chroma` if they are missing.
+    Creates `./data` and `./data/chroma` if they are missing.
 
     Returns:
         Tuple[Path, Path]: Tuple containing:
             - data_pickle_path: Full Path to `data/data_set.pkl`.
-            - chroma_dir: Full Path to `vector_storage/chroma`.
+            - chroma_dir: Full Path to `data/chroma`.
     """
     # Current working directory
     curr_dir = Path(os.getcwd())
 
-    # Data directory storing downloaded datasets and embedding caches
+    # Data directory storing downloaded datasets, embedding caches, and ChromaDB
     data_dir = curr_dir / 'data'
     data_pickle_path = data_dir / 'data_set.pkl'
-
-    # ChromaDB persistent vector storage directory
-    vectordb_dir = curr_dir / 'vector_storage'
-    chroma_dir = vectordb_dir / 'chroma'
+    chroma_dir = data_dir / 'chroma'
 
     # Iterate through paths and safely create parent directories if missing
-    for directory in (data_dir, vectordb_dir, chroma_dir):
+    for directory in (data_dir, chroma_dir):
         if not directory.exists():
             directory.mkdir(parents=True, exist_ok=True)
 

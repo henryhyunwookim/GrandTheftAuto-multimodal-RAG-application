@@ -53,6 +53,15 @@ venv/
 ENV/
 
 # --- Testing & Code Quality Caches ---
+tests/
+test/
+__tests__/
+spec/
+*.test.*
+*.spec.*
+test_*.py
+*_test.py
+conftest.py
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -74,9 +83,8 @@ flagged/
 tmp/
 temp/
 
-# --- Large Datasets & Binary Vector Storage ---
+# --- Large Datasets & Vector Storage (Unified Data Directory) ---
 data/
-vector_storage/
 *.npy
 *.pkl
 *.sqlite3

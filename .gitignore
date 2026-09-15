@@ -1,6 +1,95 @@
-log/
-notebooks/
-data/
+# ===========================================================================
+# Git Ignore Rules for GTA Multimodal RAG Application
+# ===========================================================================
+
+# --- Operating System Artifacts ---
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.AppleDouble
+.LSOverride
+*~
+.fuse_hidden*
+
+# --- IDE & Editor Settings ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# --- Python & Environment Caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 .venv/
+env/
+ENV/
+venv/
+ENV/
+
+# --- Testing & Code Quality Caches ---
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# --- Jupyter Notebooks & Caches ---
+notebooks/
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# --- Application Logs & Runtime Feedback ---
+log/
+*.log
+flagged/
+.cache/
+tmp/
+temp/
+
+# --- Large Datasets & Binary Vector Storage ---
+data/
+vector_storage/
+*.npy
+*.pkl
+*.sqlite3
+*.bin
+
+# --- Environment & Sensitive Files ---
 .env
-__pycache__
+.env.local
+.env.*.local
+*.pem
+*.key
+*.token
+secrets.yaml
+
+# Explicitly keep configuration templates
+!.env.example

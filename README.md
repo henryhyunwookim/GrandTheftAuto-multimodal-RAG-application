@@ -1,6 +1,7 @@
 # 🎮 GTA Multimodal RAG Search
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Streamlit](https://img.shields.io/badge/frontend-Streamlit%201.38+-FF4B4B.svg)](https://streamlit.io/)
 [![ChromaDB](https://img.shields.io/badge/vector%20db-ChromaDB%200.5+-orange.svg)](https://www.trychroma.com/)
 [![SentenceTransformers](https://img.shields.io/badge/embeddings-CLIP%20ViT--L%2F14-green.svg)](https://huggingface.co/sentence-transformers/clip-ViT-L-14)
@@ -118,30 +119,32 @@ GrandTheftAuto-multimodal-RAG-application/
 ├── index_dataset.py           # Offline indexing pipeline with checkpointing and dual-vector caching
 ├── rag_engine.py              # Core RAG engine: RRF search, logging, ChromaDB, Gemini client
 ├── requirements.txt           # Production Python package dependencies
+├── LICENSE                    # Open-source MIT license
 ├── .env.example               # Environment configuration template
 ├── .gitignore                 # Git ignore hygiene rules
-├── data/                      # Persistent storage for local data, caches, and indexes
+├── data/                      # Persistent storage for local data, caches, and indexes (git-ignored)
 │   ├── chroma/                # Persistent ChromaDB vector database files (collection: gta_hybrid_v2)
 │   ├── data_set.pkl           # Cached serialized HuggingFace dataset dictionary
 │   ├── descriptions_checkpoint.json # Checkpoint file for Gemini scene descriptions
 │   ├── image_embeddings_cache.npy   # Precomputed normalized visual embeddings (N x 768)
 │   └── caption_embeddings_cache.npy # Precomputed normalized text embeddings (N x 768)
-├── log/                       # Daily rotating execution logs
+├── log/                       # Daily rotating execution logs (git-ignored)
 │   └── YYYYMMDD.log           # UTF-8 structured logs with timestamps and latency telemetry
 └── notebooks/                 # Exploratory research notebooks
     ├── notebook_1.ipynb       # Dataset exploration, ingestion, and local pickle caching
-    ├── notebook_2.ipynb       # Vector database experimentation (FAISS vs. ChromaDB)
+    ├── notebook_2.ipynb       # Vector database benchmarking comparing FAISS and ChromaDB
     ├── notebook_3.ipynb       # Embedding generation and ChromaDB insertion prototyping
     └── notebook_4.ipynb       # Retrieval testing and prototype search pipeline
 ```
 
 ### Key Modules
 
-- **[`app.py`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/app.py)**: The main Streamlit web application. Manages session state, dispatches queries through `rag_engine.py`, renders side-by-side image and caption comparisons, and hosts the interactive visual deep-dive widget.
-- **[`index_dataset.py`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/index_dataset.py)**: The offline indexing pipeline CLI. Downloads or loads the dataset, generates rich scene descriptions via Gemini with automatic checkpointing, computes dual CLIP vectors, fuses them into normalized hybrid representations, and stores them in ChromaDB.
-- **[`rag_engine.py`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/rag_engine.py)**: Centralized backend module. Handles dual-stream Reciprocal Rank Fusion (RRF), ChromaDB collection lifecycles, structured UTF-8 daily file logging, and Google Gemini API invocations.
-- **[`requirements.txt`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/requirements.txt)**: Explicit package constraints pinning modern versions of Streamlit, ChromaDB, SentenceTransformers, PyTorch, and Google Generative AI.
-- **[`.env.example`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/.env.example)**: Environment variable template for API credentials.
+- **[`app.py`](app.py)**: The main Streamlit web application. Manages session state, dispatches queries through `rag_engine.py`, renders side-by-side image and caption comparisons, and hosts the interactive visual deep-dive widget.
+- **[`index_dataset.py`](index_dataset.py)**: The offline indexing pipeline CLI. Downloads or loads the dataset, generates rich scene descriptions via Gemini with automatic checkpointing, computes dual CLIP vectors, fuses them into normalized hybrid representations, and stores them in ChromaDB.
+- **[`rag_engine.py`](rag_engine.py)**: Centralized backend module. Handles dual-stream Reciprocal Rank Fusion (RRF), ChromaDB collection lifecycles, structured UTF-8 daily file logging, and Google Gemini API invocations.
+- **[`requirements.txt`](requirements.txt)**: Explicit package constraints pinning modern versions of Streamlit, ChromaDB, SentenceTransformers, PyTorch, and Google Generative AI.
+- **[`.env.example`](.env.example)**: Environment variable template for API credentials.
+- **[`LICENSE`](LICENSE)**: MIT open-source license.
 
 ---
 
@@ -208,7 +211,7 @@ GEMINI_MODEL=gemini-3.8-flash
 
 ## ⚡ Indexing the Dataset
 
-Before launching the web application, build the persistent vector search index using [`index_dataset.py`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/index_dataset.py). The pipeline supports checkpointing (resumes automatically if interrupted), batch inference, disk caching, and model lineage tracking.
+Before launching the web application, build the persistent vector search index using [`index_dataset.py`](index_dataset.py). The pipeline supports checkpointing (resumes automatically if interrupted), batch inference, disk caching, and model lineage tracking.
 
 ```bash
 # Recommended: Full indexing with Gemini multimodal scene descriptions
@@ -305,9 +308,9 @@ python index_dataset.py --force-reindex --llm-model gemini-3.8-flash --collectio
 
 ## 🔍 Observability & Logging
 
-All indexing operations, user search queries, retrieval latencies, and LLM inference timings are structured through the centralized logging module ([`rag_engine.py`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/rag_engine.py)):
+All indexing operations, user search queries, retrieval latencies, and LLM inference timings are structured through the centralized logging module ([`rag_engine.py`](rag_engine.py)):
 
-- **Daily Rotating Logs**: Stored under [`log/YYYYMMDD.log`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/log/) with UTF-8 encoding.
+- **Daily Rotating Logs**: Stored under [`log/YYYYMMDD.log`](log/) with UTF-8 encoding.
 - **Dual Console and File Handlers**: Real-time terminal output during development, accompanied by structured file traces for production debugging.
 - **Handler De-duplication**: Guarded against repeated handler instantiation during Streamlit hot-reloads.
 
@@ -325,12 +328,12 @@ Example log output:
 
 ## 🧪 Exploratory Research Notebooks
 
-The [`notebooks/`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/notebooks/) directory preserves the progressive R&D workflow that informed the production system:
+The [`notebooks/`](notebooks/) directory preserves the progressive R&D workflow that informed the production system:
 
-1. **[`notebook_1.ipynb`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/notebooks/notebook_1.ipynb)**: Initial exploration of the HuggingFace GTA Image Captioning Dataset, schema verification, and local disk serialization into `data/data_set.pkl`.
-2. **[`notebook_2.ipynb`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/notebooks/notebook_2.ipynb)**: Vector database benchmarking comparing FAISS and ChromaDB for local persistent multimodal storage.
-3. **[`notebook_3.ipynb`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/notebooks/notebook_3.ipynb)**: Early image feature extraction experiments with CLIP embeddings, sequential insertion tests, and ChromaDB ID management.
-4. **[`notebook_4.ipynb`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメント/GitHub/GrandTheftAuto-multimodal-RAG-application/notebooks/notebook_4.ipynb)**: End-to-end prototype pipeline testing text-to-image queries, similarity distance metrics, and visual result rendering prior to the Streamlit UI implementation.
+1. **[`notebook_1.ipynb`](notebooks/notebook_1.ipynb)**: Initial exploration of the HuggingFace GTA Image Captioning Dataset, schema verification, and local disk serialization into `data/data_set.pkl`.
+2. **[`notebook_2.ipynb`](notebooks/notebook_2.ipynb)**: Vector database benchmarking comparing FAISS and ChromaDB for local persistent multimodal storage.
+3. **[`notebook_3.ipynb`](notebooks/notebook_3.ipynb)**: Early image feature extraction experiments with CLIP embeddings, sequential insertion tests, and ChromaDB ID management.
+4. **[`notebook_4.ipynb`](notebooks/notebook_4.ipynb)**: End-to-end prototype pipeline testing text-to-image queries, similarity distance metrics, and visual result rendering prior to the Streamlit UI implementation.
 
 ---
 
@@ -340,6 +343,22 @@ The [`notebooks/`](file:///c:/Users/hyunwookim/OneDrive%20-%20GAFS/ドキュメ�
 - **Advanced Vision Encoders**: Potential future benchmarking against newer open vision-language backbones such as SigLIP 2 or EVA-02 for even finer spatial understanding.
 - **Multi-Image Querying**: Supporting multimodal reverse image search where users upload an existing screenshot alongside a text prompt to perform guided retrieval.
 - **Top-K Multi-Match Gallery**: Extending the UI to display a ranked gallery of top-K matching scenes with interactive filter sliders for image vs. text ranking weight.
+
+---
+
+## ⚖️ Legal & Trademark Disclaimer
+
+This project and research demonstration are developed strictly for non-commercial educational, machine learning benchmarking, and informational purposes under fair use.
+
+- **Grand Theft Auto**, **GTA**, and all related video game screenshots, imagery, character depictions, and logos are registered trademarks and copyright of **Rockstar Games** and **Take-Two Interactive Software, Inc.**
+- This project is an independent educational inquiry and is **not** endorsed by, affiliated with, sponsored by, or associated with Rockstar Games or Take-Two Interactive.
+- Image screenshots and text annotations are derived from the publicly available research dataset [GTA-Image-Captioning-Dataset](https://huggingface.co/datasets/vipulmaheshwari/GTA-Image-Captioning-Dataset) by Vipul Maheshwari on Hugging Face.
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
 
 ---
 

@@ -164,13 +164,8 @@ GrandTheftAuto-multimodal-RAG-application/
 │   ├── descriptions_checkpoint.json # Checkpoint file for Gemini scene descriptions
 │   ├── image_embeddings_cache.npy   # Precomputed normalized visual embeddings (N x 768)
 │   └── caption_embeddings_cache.npy # Precomputed normalized text embeddings (N x 768)
-├── log/                       # Daily rotating execution logs (git-ignored)
-│   └── YYYYMMDD.log           # UTF-8 structured logs with timestamps and latency telemetry
-└── notebooks/                 # Exploratory research notebooks
-    ├── notebook_1.ipynb       # Dataset exploration, ingestion, and local pickle caching
-    ├── notebook_2.ipynb       # Vector database benchmarking comparing FAISS and ChromaDB
-    ├── notebook_3.ipynb       # Embedding generation and ChromaDB insertion prototyping
-    └── notebook_4.ipynb       # Retrieval testing and prototype search pipeline
+└── log/                       # Daily rotating execution logs (git-ignored)
+    └── YYYYMMDD.log           # UTF-8 structured logs with timestamps and latency telemetry
 ```
 
 ### Key Modules
@@ -359,17 +354,6 @@ Example log output:
 2026-09-15 15:00:01,145 [INFO] [app]: RRF Match: image_id=142 | dist=0.1824 | rrf=0.03215 | caption='A red sports car driving...' | row_fetch=2.8ms
 2026-09-15 15:00:01,146 [INFO] [app]: Search successfully returned match in 25.1ms for query: 'sports car at sunset'
 ```
-
----
-
-## 🧪 Exploratory Research Notebooks
-
-The [`notebooks/`](notebooks/) directory preserves the progressive R&D workflow that informed the production system:
-
-1. **[`notebook_1.ipynb`](notebooks/notebook_1.ipynb)**: Initial exploration of the HuggingFace GTA Image Captioning Dataset, schema verification, and local disk serialization into `data/data_set.pkl`.
-2. **[`notebook_2.ipynb`](notebooks/notebook_2.ipynb)**: Vector database benchmarking comparing FAISS and ChromaDB for local persistent multimodal storage.
-3. **[`notebook_3.ipynb`](notebooks/notebook_3.ipynb)**: Early image feature extraction experiments with CLIP embeddings, sequential insertion tests, and ChromaDB ID management.
-4. **[`notebook_4.ipynb`](notebooks/notebook_4.ipynb)**: End-to-end prototype pipeline testing text-to-image queries, similarity distance metrics, and visual result rendering prior to the Streamlit UI implementation.
 
 ---
 

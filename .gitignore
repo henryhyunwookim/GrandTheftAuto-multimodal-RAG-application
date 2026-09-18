@@ -50,7 +50,6 @@ MANIFEST
 env/
 ENV/
 venv/
-ENV/
 
 # --- Testing & Code Quality Caches ---
 tests/
@@ -82,6 +81,14 @@ flagged/
 .cache/
 tmp/
 temp/
+.temp/
+
+# --- AI Assistants & Agent Scratch Dirs ---
+scratch/
+.agent/
+.agents/
+.gemini/
+.claude/
 
 # --- Large Datasets & Vector Storage (Unified Data Directory) ---
 data/

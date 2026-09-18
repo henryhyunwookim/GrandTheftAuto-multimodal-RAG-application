@@ -149,13 +149,22 @@ flowchart LR
 
 ```plaintext
 GrandTheftAuto-multimodal-RAG-application/
-├── app.py                     # Interactive Streamlit search & multimodal deep-dive application
-├── index_dataset.py           # Offline indexing pipeline with checkpointing and dual-vector caching
-├── rag_engine.py              # Core RAG engine: RRF search, logging, ChromaDB, Gemini client
+├── app.py                     # Root Streamlit entrypoint (delegates to src/app.py)
+├── index_dataset.py           # Root indexing entrypoint (delegates to scripts/index_dataset.py)
+├── rag_engine.py              # Root backward-compatibility shim (re-exports src.rag_engine)
 ├── requirements.txt           # Production Python package dependencies
 ├── LICENSE                    # Open-source MIT license
 ├── .env.example               # Environment configuration template
-├── .gitignore                 # Git ignore hygiene rules
+├── .gitignore                 # Robust Git ignore rules
+│
+├── src/                       # Core application source code
+│   ├── __init__.py            # Package marker exposing engine symbols
+│   ├── app.py                 # Main Streamlit web application & UI presentation
+│   └── rag_engine.py          # Core multimodal RAG engine: RRF search, logging, ChromaDB, Gemini
+│
+├── scripts/                   # Standalone operational & offline pipelines
+│   └── index_dataset.py       # Offline dataset indexing CLI with checkpointing & caching
+│
 ├── docs/                      # Documentation assets and visual previews
 │   └── sample_search_preview.png # Visual preview of search UI and multimodal output
 ├── data/                      # Persistent storage for local data, caches, and indexes (git-ignored)
@@ -168,11 +177,11 @@ GrandTheftAuto-multimodal-RAG-application/
     └── YYYYMMDD.log           # UTF-8 structured logs with timestamps and latency telemetry
 ```
 
-### Key Modules
+### Key Modules & Entrypoints
 
-- **[`app.py`](app.py)**: The main Streamlit web application. Manages session state, dispatches queries through `rag_engine.py`, renders side-by-side image and caption comparisons, and hosts the interactive visual deep-dive widget.
-- **[`index_dataset.py`](index_dataset.py)**: The offline indexing pipeline CLI. Downloads or loads the dataset, generates rich scene descriptions via Gemini with automatic checkpointing, computes dual CLIP vectors, fuses them into normalized hybrid representations, and stores them in ChromaDB.
-- **[`rag_engine.py`](rag_engine.py)**: Centralized backend module. Handles dual-stream Reciprocal Rank Fusion (RRF), ChromaDB collection lifecycles, structured UTF-8 daily file logging, and Google Gemini API invocations.
+- **[`app.py`](app.py)** / **[`src/app.py`](src/app.py)**: The main Streamlit web application. Manages session state, dispatches queries through `src/rag_engine.py`, renders side-by-side image and caption comparisons, and hosts the interactive visual deep-dive widget. Invoked with `streamlit run app.py` or `streamlit run src/app.py`.
+- **[`index_dataset.py`](index_dataset.py)** / **[`scripts/index_dataset.py`](scripts/index_dataset.py)**: The offline indexing pipeline CLI. Downloads or loads the dataset, generates rich scene descriptions via Gemini with automatic checkpointing, computes dual CLIP vectors, fuses them into normalized hybrid representations, and stores them in ChromaDB. Invoked with `python index_dataset.py` or `python scripts/index_dataset.py`.
+- **[`src/rag_engine.py`](src/rag_engine.py)**: Centralized backend module. Handles dual-stream Reciprocal Rank Fusion (RRF), ChromaDB collection lifecycles, structured UTF-8 daily file logging, and Google Gemini API invocations. Re-exported via [`rag_engine.py`](rag_engine.py) for backward compatibility.
 - **[`requirements.txt`](requirements.txt)**: Explicit package constraints pinning modern versions of Streamlit, ChromaDB, SentenceTransformers, PyTorch, and Google Generative AI.
 - **[`.env.example`](.env.example)**: Environment variable template for API credentials.
 - **[`LICENSE`](LICENSE)**: MIT open-source license.
